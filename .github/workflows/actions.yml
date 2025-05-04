@@ -1,0 +1,40 @@
+name: Deploy Dotnet App with Docker Compose (Multiple Services)
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Test SSH Connection
+        env:
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          SERVER_IP: ${{ secrets.DEV_SERVER_BETA1 }}
+        run: |
+          echo "Testing SSH connection to server using username '${SERVER_USER}'"
+          ssh -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_IP} -p 22 "echo 'Connected as $(whoami)'"
+
+      - name: Deploy to Production Server
+        uses: appleboy/ssh-action@v0.1.8
+        with:
+          host: ${{ secrets.DEV_SERVER_BETA1 }}
+          username: ${{ secrets.SERVER_USER }}
+          debug: true
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /home/presley/
+            git pull origin main
+            docker-compose pull  # Pull the latest images for all services
+            docker-compose down  # Stop and remove the current containers
+            docker-compose up -d --build
