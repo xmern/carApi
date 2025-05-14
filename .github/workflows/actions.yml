@@ -34,7 +34,7 @@ jobs:
           debug: true
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /home/presley/
+            cd /home/ubuntu/
             git pull origin main
             docker-compose pull  # Pull the latest images for all services
             docker-compose down  # Stop and remove the current containers
