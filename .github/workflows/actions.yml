@@ -20,7 +20,7 @@ jobs:
       - name: Test SSH Connection
         env:
           SERVER_USER: ${{ secrets.SERVER_USER }}
-          SERVER_IP: ${{ secrets.DEV_SERVER_BETA1 }}
+          SERVER_IP: ${{ secrets.SERVER_IP }}
         run: |
           echo "Testing SSH connection to server using username '${SERVER_USER}'"
           ssh -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_IP} -p 22 "echo 'Connected as $(whoami)'"
@@ -28,7 +28,7 @@ jobs:
       - name: Deploy to Production Server
         uses: appleboy/ssh-action@v0.1.8
         with:
-          host: ${{ secrets.DEV_SERVER_BETA1 }}
+          host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASWORD }}
           debug: true
