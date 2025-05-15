@@ -19,7 +19,7 @@ jobs:
           SERVER_IP: 51.20.167.66
         run: |
           echo "Testing SSH connection to server using username 'ubuntu'"
-          ssh -o StrictHostKeyChecking=no ubuntu@51.20.167.66 -p 22 "echo 'Connected as $(whoami)'"
+          sshpass -p "qwerty" ssh -o StrictHostKeyChecking=no ubuntu@51.20.167.66 -p 22 "echo 'Connected as $(whoami)'"
 
       - name: Deploy to Production Server
         uses: appleboy/ssh-action@v0.1.8
