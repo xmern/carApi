@@ -19,7 +19,7 @@ jobs:
           SERVER_IP: ${{ secrets.SERVER_IP }}
         run: |
           echo "Testing SSH connection to server using username '${SERVER_USER}'"
-          sshpass -p "$SERVER_PASSWORD" ssh -v -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_IP} -p 22 "echo 'Connected as $(whoami)'"
+          sshpass -p "$SERVER_PASWORD" ssh -v -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_IP} -p 22 "echo 'Connected as $(whoami)'"
 
       - name: Deploy to Production Server
         uses: appleboy/ssh-action@v0.1.8
